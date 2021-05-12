@@ -9,9 +9,9 @@ import DisplayBalances from './Components/DisplayBalances';
 
 import EntryLines from './Components/EntryLines';
 import ModalEdit from './Components/ModalEdit';
-
+import{useSelector} from 'react-redux'
 function App() {
-  const[entries, setEntries] =useState(initialEntries);
+  
   const [description, setDescription] = useState('');
   const [value, setValue] = useState('');
   const [isExpense, setIsExpense] = useState(true);
@@ -20,6 +20,7 @@ function App() {
   const[total,setTotal] =useState(0);
   const[incomeTotal,setIncomeTotal] =useState(0);
   const[expenseTotal,setExpenseTotal] =useState(0);
+  const entries = useSelector((state)=>state.entries);
   
  
   useEffect(()=>{
@@ -29,7 +30,7 @@ function App() {
      newEntries[index].description=description;
      newEntries[index].value=value;
      newEntries[index].isExpense=isExpense;
-     setEntries(newEntries);
+    // setEntries(newEntries);
     resetEntry();
     }
      //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,11 +50,9 @@ function App() {
   setIncomeTotal(totalIncomes);
   },[entries]);
 
-   function deleteEntry(id){
-    const result = entries.filter((entry)=>entry.id !==id);
-    setEntries(result);
+  
 
-  }
+  
   function editEntry(id){
     console.log(`edit entry with is ${id}`);
    if(id){
@@ -74,7 +73,7 @@ function App() {
       value,
       isExpense,
     });
-    setEntries(result);
+    //setEntries(result);
     resetEntry();
   }
   function resetEntry(){
@@ -89,7 +88,7 @@ function App() {
      <DisplayBalances expenseTotal={ expenseTotal} incomeTotal={incomeTotal} />
        
      <MainHeader title='History' type='h3' />
-     <EntryLines entries={entries} deleteEntry={deleteEntry} editEntry={editEntry}/>
+     <EntryLines entries={entries} editEntry={editEntry}/>
     
         <MainHeader title='Add new transaction' type='h3'/>
        <NewEntryForm 
@@ -119,25 +118,3 @@ function App() {
 }
 
 export default App;
-var initialEntries =[
-  { id:1,
-    description:'work income',
-    value:25000,
-    isExpense:false,
-  },
-  { id:2,
-    description:'water-bill',
-    value: 2500,
-    isExpense:true,
-  },
-  { id:3,
-    description:'power-bill',
-    value:2000,
-    isExpense:true,
-  },
-  { id:4,
-    description:'Rent',
-    value:7000,
-    isExpense:true,
-  },
-];
